@@ -1,0 +1,33 @@
+name: Deploy Matta Webpage to server via SSH
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Matta to a server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.MATTA_SECRET }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 22 13.214.193.99 >> ~/.ssh/known_hosts
+
+      - name: Deploy files to server using rsync
+        run: |
+          rsync -avz --delete \
+            --exclude='.git*' \
+            -e "ssh -p 22" \
+            ./ \
+            ubuntu@13.214.193.99:/www/wwwroot/mattapanel.work.gd
+
+      - name: Post-deploy verification
+        run: echo " Mattapabel deployment completed successfully."
