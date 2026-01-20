@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Matta to a server
+    name: Deploy Matta to a server
     runs-on: ubuntu-latest
 
     steps:
@@ -25,10 +25,12 @@ jobs:
         run: |
           rsync -avz --delete \
             --exclude='.git*' \
+            --exclude='.github*' \
             --exclude='.user.ini' \
+            --exclude='node_modules' \
             -e "ssh -p 22" \
             ./ \
             root@13.214.193.99:/www/wwwroot/mattapanel.work.gd
 
       - name: Post-deploy verification
-        run: echo " Mattapabel deployment completed successfully."
+        run: echo "Mattapanel deployment completed successfully."
