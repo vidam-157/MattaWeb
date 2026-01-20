@@ -27,7 +27,7 @@ jobs:
             --exclude='.git*' \
             -e "ssh -p 22" \
             ./ \
-            ubuntu@13.214.193.99:/www/wwwroot/mattapanel.work.gd
+            root@13.214.193.99:/www/wwwroot/mattapanel.work.gd
 
       - name: Post-deploy verification
         run: echo " Mattapabel deployment completed successfully."
